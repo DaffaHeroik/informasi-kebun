@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThingSpeak Data Display</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      width: 50%;
+      margin: 0 auto;
+      text-align: center;
+      padding-top: 50px;
+    }
+    .data {
+      font-size: 24px;
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Data from ThingSpeak</h1>
+    <div class="data" id="temperature">Loading temperature...</div>
+    <div class="data" id="humidity">Loading humidity...</div>
+  </div>
+
+  <script>
+    // Fungsi untuk mendapatkan data dari ThingSpeak
+    function getData() {
+      const channelID = '123456';  // Ganti dengan Channel ID kamu
+      const readAPIKey = 'XXXXXXXXXXXXXXXX';  // Ganti dengan Read API Key kamu
+      const url = `https://api.thingspeak.com/channels/${channelID}/feeds.json?api_key=${readAPIKey}`;
+
+      // Mengambil data dari ThingSpeak
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          // Menampilkan data ke HTML
+          const temperature = data.feeds[0].field1;  // Ganti 'field1' dengan nama field kamu
+          const humidity = data.feeds[0].field2;  // Ganti 'field2' dengan nama field kamu
+          
+          document.getElementById('temperature').innerText = `Temperature: ${temperature} °C`;
+          document.getElementById('humidity').innerText = `Humidity: ${humidity} %`;
+        })
+        .catch(error => {
+          console.error('Error fetching data: ', error);
+        });
+    }
+
+    // Panggil fungsi untuk mendapatkan data
+    getData();
+  </script>
+</body>
+</html>
